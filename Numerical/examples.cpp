@@ -7,13 +7,11 @@
 #include "lcg.h"
 #include "examples.h"
 
-using namespace std;
-
 namespace Numerical {
 
 void lgc_example() {
   LCG gen;
-  cout << "Example linear congruential generator: " <<
+  std::cout << "Example linear congruential generator: " <<
                 gen.random(1) << ", " <<
                 gen.random(2) << ", " <<
                 gen.random(3) << ", " <<
@@ -23,7 +21,7 @@ void lgc_example() {
                 gen.random(7) << ", " <<
                 gen.random(8) << ", " <<
                 gen.random(9) << ", " <<
-                gen.random(10) << endl;
+                gen.random(10) << std::endl;
 }
 
-}
+} // namespace Numerical
