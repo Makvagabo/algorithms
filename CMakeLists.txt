@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(
         algorithms main.cpp
-        Numerical/lcg.cpp
+        Numerical/pseudo-random_number_generator.cpp
         Numerical/examples.cpp
-        Numerical/randomize_array.cpp
         )

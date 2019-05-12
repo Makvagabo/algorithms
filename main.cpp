@@ -1,10 +1,7 @@
 #include "Numerical/examples.h"
 
-#include <iostream>
-
-using namespace std;
-
 int main() {
-  Numerical::lgc_example();
+  Numerical::pseudo_random_number_generator_example();
+  Numerical::randomize_array_example();
   return 0;
 }

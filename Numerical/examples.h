@@ -2,11 +2,12 @@
 // Created by Alexander on 09.05.2019.
 //
 
-#ifndef ALGORITHMS_EXAMPLES_H
-#define ALGORITHMS_EXAMPLES_H
+#ifndef ALGORITHMS_NUMERICAL_EXAMPLES_H_
+#define ALGORITHMS_NUMERICAL_EXAMPLES_H_
 namespace Numerical {
 
-void lgc_example();
+void pseudo_random_number_generator_example();
+void randomize_array_example();
 
 }
-#endif //ALGORITHMS_EXAMPLES_H
+#endif // ALGORITHMS_NUMERICAL_EXAMPLES_H_
