@@ -4,8 +4,9 @@
 
 #include <iostream>
 
-#include "pseudo-random_number_generator.h"
+#include "prng.h"
 #include "randomize_array.h"
+#include "gcd.h"
 
 #include "examples.h"
 
@@ -16,9 +17,9 @@ using std::cout, std::endl;
 void pseudo_random_number_generator_example() {
   cout << "Example pseudo-random number generator:" << endl;
 
-  PseudoRandomNumberGenerator gen(14, 3, 1879);
+  PRNG generator(14, 3, 1879);
   for (int i = 1; i < 20; ++i) {
-    cout << gen.random(i) << " ";
+    cout << generator.random(i) << " ";
   }
   cout << endl;
 }
@@ -34,13 +35,20 @@ void randomize_array_example() {
   }
   cout << endl;
 
-  auto *gen  = new PseudoRandomNumberGenerator(14, 3, 1879);
-  RandomizeArray(gen, arr, SIZE);
+  auto *generator  = new PRNG(14, 3, 1879);
+  RandomizeArray(generator, arr, SIZE);
 
   cout << "Output: ";
   for (auto item : arr) {
     cout << item << " ";
   }
+  cout << endl;
+}
+void greatest_common_devisor_example() {
+  cout << endl << "Example greatest common devisor:" << endl;
+
+  int a = 4851, b = 3003;
+  cout << "GCD(" << a << ", " << b << ") = " << GCD(a, b);
   cout << endl;
 }
 

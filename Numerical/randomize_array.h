@@ -7,7 +7,7 @@
 namespace Numerical {
 
 template<class T>
-void RandomizeArray(PseudoRandomNumberGenerator *generator, T *arr, const int &size) {
+void RandomizeArray(PRNG *generator, T *arr, const int &size) {
   for (int i = 0; i < size; ++i) {
     auto temp = arr[i];
     auto j = generator->random(i, 0, size);
