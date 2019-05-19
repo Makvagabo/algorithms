@@ -18,4 +18,4 @@ class PRNG {
 };
 
 } // namespace Numerical
-#endif //ALGORITHMS_NUMERICAL_PRNG_H_
+#endif // ALGORITHMS_NUMERICAL_PRNG_H_

@@ -7,4 +7,5 @@ add_executable(
         algorithms main.cpp
         Numerical/prng.cpp
         Numerical/examples.cpp
-        Numerical/gcd.cpp)
+        Numerical/gcd.cpp
+        Numerical/raise_to_power.cpp)

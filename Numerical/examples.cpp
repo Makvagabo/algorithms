@@ -7,6 +7,7 @@
 #include "prng.h"
 #include "randomize_array.h"
 #include "gcd.h"
+#include "raise_to_power.h"
 
 #include "examples.h"
 
@@ -49,6 +50,15 @@ void greatest_common_devisor_example() {
 
   int a = 4851, b = 3003;
   cout << "GCD(" << a << ", " << b << ") = " << GCD(a, b);
+  cout << endl;
+}
+
+void raise_to_power_example() {
+  cout << endl << "Example raise to power:" << endl;
+
+  double a = 3; int p = 33;
+  // 3 is a smallest number after 2, 33 is max power for double
+  cout << a << " to power " << p << " = " << std::fixed << RaiseToPower(a, p);
   cout << endl;
 }
 

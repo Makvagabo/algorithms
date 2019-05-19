@@ -15,4 +15,4 @@ int GCD(int a, int b) {
   return a;
 }
 
-}
+} // namespace Numerical
