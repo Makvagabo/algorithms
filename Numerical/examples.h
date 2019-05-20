@@ -10,6 +10,7 @@ void pseudo_random_number_generator_example();
 void randomize_array_example();
 void greatest_common_devisor_example();
 void raise_to_power_example();
+void find_factors_example();
 
 }
 #endif // ALGORITHMS_NUMERICAL_EXAMPLES_H_

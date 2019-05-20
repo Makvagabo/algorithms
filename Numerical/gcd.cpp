@@ -5,6 +5,9 @@
 #include "gcd.h"
 namespace Numerical {
 
+/**
+ * Greatest common devisor or Euclidean algorithm
+ */
 int GCD(int a, int b) {
   int remainder;
   while (b) {

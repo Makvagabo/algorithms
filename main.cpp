@@ -7,6 +7,7 @@ int main() {
   Numerical::randomize_array_example();
   Numerical::greatest_common_devisor_example();
   Numerical::raise_to_power_example();
+  Numerical::find_factors_example();
 
   return 0;
 }
