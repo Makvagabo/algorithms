@@ -14,7 +14,7 @@ class PRNG {
  public:
   PRNG();
   explicit PRNG(int, int, int);
-  int random(unsigned int, unsigned int min = 0, unsigned int max = 100);
+  unsigned int random(unsigned int, unsigned int min = 0, unsigned int max = 100);
 };
 
 } // namespace Numerical

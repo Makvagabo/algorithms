@@ -2,6 +2,7 @@
 // Created by Alexander on 09.05.2019.
 //
 
+#include <cstdint>
 #include <iostream>
 
 #include "prng.h"
@@ -9,6 +10,7 @@
 #include "gcd.h"
 #include "raise_to_power.h"
 #include "find_factors.h"
+#include "find_primes.h"
 
 #include "examples.h"
 
@@ -71,6 +73,17 @@ void find_factors_example() {
     cout << factor << " ";
   }
 
+  cout << endl;
+}
+void find_primes_example() {
+  cout << endl << "Example find primes:" << endl;
+
+  int max = 100;
+  cout << "Primes number from 2 to " << max << ": " << endl;
+  auto primes = FindPrimes(max);
+  for (auto item : primes) {
+    cout << item << " ";
+  }
   cout << endl;
 }
 

@@ -8,6 +8,7 @@ int main() {
   Numerical::greatest_common_devisor_example();
   Numerical::raise_to_power_example();
   Numerical::find_factors_example();
+  Numerical::find_primes_example();
 
   return 0;
 }

@@ -17,12 +17,12 @@ std::vector<int> FindFactors(int number) {
   }
 
   int i = 3;
-  int max_factor = static_cast<int>(std::sqrt(number));
+  auto max_factor = std::sqrt(number);
   while (i <= max_factor) {
     while (number % i == 0) {
       list_of_integer.push_back(i);
       number /= i;
-      max_factor = static_cast<int>(std::sqrt(number));
+      max_factor = std::sqrt(number);
     }
 
     i += 2;

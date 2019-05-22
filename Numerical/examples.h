@@ -11,6 +11,7 @@ void randomize_array_example();
 void greatest_common_devisor_example();
 void raise_to_power_example();
 void find_factors_example();
+void find_primes_example();
 
 }
 #endif // ALGORITHMS_NUMERICAL_EXAMPLES_H_
