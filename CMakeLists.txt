@@ -9,6 +9,6 @@ add_executable(
         Numerical/prng.cpp
         Numerical/examples.cpp
         Numerical/gcd.cpp
-        Numerical/raise_to_power.cpp
         Numerical/find_factors.cpp
-        Numerical/find_primes.cpp)
+        Numerical/find_primes.cpp
+        Numerical/is_prime.cpp)

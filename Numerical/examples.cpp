@@ -11,6 +11,7 @@
 #include "raise_to_power.h"
 #include "find_factors.h"
 #include "find_primes.h"
+#include "is_prime.h"
 
 #include "examples.h"
 
@@ -84,6 +85,21 @@ void find_primes_example() {
   for (auto item : primes) {
     cout << item << " ";
   }
+  cout << endl;
+}
+void is_prime_example() {
+  cout << endl << "Example prime test:" << endl;
+
+  uint64_t p = 19;
+  auto is_prime = IsPrime(p, 10);
+
+  cout << p << " is ";
+  if (is_prime) {
+    cout << "probably prime";
+  } else {
+    cout << "composite";
+  }
+
   cout << endl;
 }
 

@@ -9,6 +9,7 @@ int main() {
   Numerical::raise_to_power_example();
   Numerical::find_factors_example();
   Numerical::find_primes_example();
+  Numerical::is_prime_example();
 
   return 0;
 }

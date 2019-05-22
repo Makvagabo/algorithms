@@ -18,10 +18,11 @@ std::list<int> FindPrimes(int max_number) {
   }
 
   int next_prime = 3;
-  int step = next_prime * 2;
   auto stop_at = std::sqrt(max_number);
   while (next_prime <= stop_at) {
-    for (int i = next_prime * 3; i < max_number; i += next_prime * 2) {
+
+    int step = next_prime * 2;
+    for (int i = next_prime * 3; i < max_number; i += step) {
       is_composite[i] = true;
     }
 
