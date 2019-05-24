@@ -11,6 +11,7 @@ namespace Numerical {
 class PRNG {
   int a_, b_, m_;
   int x_;
+  int prev;
  public:
   PRNG();
   explicit PRNG(int, int, int);

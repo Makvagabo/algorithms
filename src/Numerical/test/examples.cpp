@@ -4,6 +4,9 @@
 
 #include <cstdint>
 #include <iostream>
+#include <string>
+
+#include "big_integer.h"
 
 #include "prng.h"
 #include "randomize_array.h"
@@ -19,36 +22,6 @@ namespace Numerical {
 
 using std::cout, std::endl;
 
-void pseudo_random_number_generator_example() {
-  cout << "Example pseudo-random number generator:" << endl;
-
-  PRNG generator(14, 3, 1879);
-  for (int i = 1; i < 20; ++i) {
-    cout << generator.random(i) << " ";
-  }
-  cout << endl;
-}
-void randomize_array_example() {
-  cout << endl << "Example randomize array:" << endl;
-
-  cout << "Input:  ";
-  const int SIZE = 10;
-  int arr[SIZE];
-  for (int i = 0; i < SIZE; ++i) {
-    arr[i] = 10 * (i + 1);
-    cout << arr[i] << " ";
-  }
-  cout << endl;
-
-  auto *generator  = new PRNG(14, 3, 1879);
-  RandomizeArray(generator, arr, SIZE);
-
-  cout << "Output: ";
-  for (auto item : arr) {
-    cout << item << " ";
-  }
-  cout << endl;
-}
 void greatest_common_devisor_example() {
   cout << endl << "Example greatest common devisor:" << endl;
 
@@ -101,6 +74,17 @@ void is_prime_example() {
   }
 
   cout << endl;
+}
+void big_integer_example() {
+  cout << endl << "Example big integer:" << endl;
+
+  std::string n_0 = "5";
+  std::string n_1 = "4294967296";
+  std::string n_2 = "9007199254740992";
+  std::string n_3 = "9007199254740992";
+
+  b_int b_int0(n_0), b_int1(n_1), b_int2(n_2), b_int3(n_3);
+  cout << n_3 << " + " << n_2 << " - " << n_1 << " = " << (((b_int2 + b_int3) * b_int0) - b_int1);
 }
 
 } // namespace Numerical

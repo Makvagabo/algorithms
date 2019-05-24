@@ -13,6 +13,7 @@ void raise_to_power_example();
 void find_factors_example();
 void find_primes_example();
 void is_prime_example();
+void big_integer_example();
 
 }
 #endif // ALGORITHMS_NUMERICAL_EXAMPLES_H_

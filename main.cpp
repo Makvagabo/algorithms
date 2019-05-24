@@ -1,15 +1,7 @@
-#include "Numerical/examples.h"
-
-#include <map>
+//
+// Created by Alexander on 02.06.2019.
+//
 
 int main() {
-  Numerical::pseudo_random_number_generator_example();
-  Numerical::randomize_array_example();
-  Numerical::greatest_common_devisor_example();
-  Numerical::raise_to_power_example();
-  Numerical::find_factors_example();
-  Numerical::find_primes_example();
-  Numerical::is_prime_example();
-
   return 0;
 }
