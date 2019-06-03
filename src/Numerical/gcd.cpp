@@ -3,6 +3,7 @@
 //
 
 #include "gcd.h"
+
 namespace Numerical {
 
 /**

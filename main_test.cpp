@@ -4,3 +4,4 @@
 
 #include "Numerical/test/prng.cpp"
 #include "Numerical/test/randomize_array.cpp"
+#include "Numerical/test/gcd.cpp"
