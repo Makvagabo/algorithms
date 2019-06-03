@@ -7,7 +7,7 @@
 #include "Numerical/prng.h"
 #include "Numerical/randomize_array.h"
 
-TEST(Numerical, RandomizeArray) {
+TEST(Numerical, RandomizeArray_Test) {
   const int SIZE = 10;
   int arr[SIZE] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 

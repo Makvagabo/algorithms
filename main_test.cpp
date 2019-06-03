@@ -5,3 +5,5 @@
 #include "Numerical/test/prng.cpp"
 #include "Numerical/test/randomize_array.cpp"
 #include "Numerical/test/gcd.cpp"
+#include "Numerical/test/raise_to_power.cpp"
+#include "Numerical/test/big_integer.cpp"

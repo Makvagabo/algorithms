@@ -12,4 +12,5 @@ void RandomizeArray(PRNG *generator, T *arr, const int &size);
 } // namespace Numerical
 
 #include "randomize_array.hpp"
+
 #endif // ALGORITHMS_NUMERICAL_RANDOMIZE_ARRAY_H_

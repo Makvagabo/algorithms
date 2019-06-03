@@ -22,13 +22,6 @@ namespace Numerical {
 
 using std::cout, std::endl;
 
-void greatest_common_devisor_example() {
-  cout << endl << "Example greatest common devisor:" << endl;
-
-  int a = 4851, b = 3003;
-  cout << "GCD(" << a << ", " << b << ") = " << GCD(a, b);
-  cout << endl;
-}
 void raise_to_power_example() {
   cout << endl << "Example raise to power:" << endl;
 

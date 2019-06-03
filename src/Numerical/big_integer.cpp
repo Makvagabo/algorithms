@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <algorithm>
+#include <string>
 
 namespace Numerical {
 
@@ -14,7 +15,8 @@ using std::cout;
 
 BigInteger::BigInteger() : positive(true) {}
 BigInteger::BigInteger(const std::string &number) : positive(true) {
-  int i = 0;
+  number_.clear();
+
   auto it = number.begin();
 
   if (*it == '-') {
@@ -23,16 +25,82 @@ BigInteger::BigInteger(const std::string &number) : positive(true) {
   }
 
   while (it != number.end()) {
-    auto ch = *it;
-    number_.push_back(strtol(&ch, nullptr, 10));
+    auto temp = (int)*it - (int)48;
+
+    if (temp > 9 || temp < 0) {
+      std::string message = "Error convert. Unexpected char: ";
+      message.append(std::to_string(temp));
+      throw BigIntegerError(message);
+    }
+
+    number_.push_back(temp);
     it++;
+  }
+}
+BigInteger::BigInteger(const char *number) : positive(true) {
+  number_.clear();
+
+  if (*number == '-') {
+    positive = false;
+  }
+
+  int i = !positive;
+  while (*(number+i) != '\0') {
+    auto temp = (int)*(number+i) - (int)48;
+
+    if (temp > 9 || temp < 0) {
+      std::string message = "Error convert. Unexpected char: ";
+      message.append(std::to_string(temp));
+      throw BigIntegerError(message);
+    }
+
+    number_.push_back(temp);
     i++;
+  }
+}
+BigInteger::BigInteger(int number): positive(true) {
+  number_.clear();
+
+  auto number_str = std::to_string(number);
+  auto it = number_str.begin();
+
+  if (*it == '-') {
+    positive = false;
+    it++;
+  }
+
+  while (it != number_str.end()) {
+    auto temp = (int)*it - (int)48;
+
+    if (temp > 9 || temp < 0) {
+      std::string message = "Error convert. Unexpected char: ";
+      message.append(std::to_string(temp));
+      throw BigIntegerError(message);
+    }
+
+    number_.push_back(temp);
+    it++;
   }
 }
 BigInteger::BigInteger(const b_int &bi) {
   positive = bi.positive;
   number_ = bi.number_;
 }
+
+std::string BigInteger::toString() const {
+  std::string temp;
+
+  if (!positive) {
+    temp.append("-");
+  }
+
+  for (auto ch : number_) {
+    temp.append(std::to_string(ch));
+  }
+
+  return temp;
+}
+
 std::ostream &operator<<(std::ostream &os, const b_int &bi) {
   if (bi.number_.empty()) {
     cout << '0';
@@ -44,22 +112,23 @@ std::ostream &operator<<(std::ostream &os, const b_int &bi) {
   }
   return os;
 }
-b_int BigInteger::operator*(const b_int &second) const {
-  b_int result(*this);
 
+b_int BigInteger::operator*(const b_int &second) const {
+  if (this->number_.empty() || second.number_.empty()) {
+    throw BigIntegerError("Error operation multiplication. One or more operands is empty.");
+  }
+
+  b_int result(*this);
   result *= second;
 
   return result;
 }
 b_int &BigInteger::operator*=(const b_int &second) {
-  b_int result;
-
-  if (number_.empty() && !second.number_.empty()) {
-    *this = second;
-    return *this;
-  } else if (!number_.empty() && second.number_.empty()) {
-    return *this;
+  if (this->number_.empty() || second.number_.empty()) {
+    throw BigIntegerError("Error operation multiplication. One or more operands is empty.");
   }
+
+  b_int result;
 
   b_int master, slave;
   if (number_.size() < second.number_.size()) {
@@ -69,11 +138,6 @@ b_int &BigInteger::operator*=(const b_int &second) {
     master = second;
     slave = *this;
   }
-
-  // нельзя сделать тут отрицательным так как нет операции вычитания
-  // result.positive = positive && second.positive;
-  master.positive = true;
-  slave.positive = true;
 
   std::reverse(master.number_.begin(), master.number_.end());
   std::reverse(slave.number_.begin(), slave.number_.end());
@@ -108,13 +172,13 @@ b_int &BigInteger::operator*=(const b_int &second) {
     i++;
   }
 
+  result.positive = !(positive ^ second.positive);
   *this = result;
 
   return *this;
 }
 b_int BigInteger::operator+(const b_int &second) const {
   b_int result(*this);
-
   result += second;
 
   return result;
@@ -123,16 +187,17 @@ b_int &BigInteger::operator+=(const b_int &second) {
   b_int result;
   auto general_size = number_.size() < second.number_.size() ? second.number_.size() : number_.size();
 
-  b_int second_temp = second;
-  std::reverse(number_.begin(), number_.end());
-  std::reverse(second_temp.number_.begin(), second_temp.number_.end());
-
-  auto main_it = number_.begin();
-  auto main_end = number_.end();
-  auto second_it = second_temp.number_.begin();
-  auto second_end = second_temp.number_.end();
-
   if (!(positive ^ second.positive)) {
+    b_int second_temp = second;
+
+    std::reverse(number_.begin(), number_.end());
+    std::reverse(second_temp.number_.begin(), second_temp.number_.end());
+
+    auto main_it = number_.begin();
+    auto main_end = number_.end();
+    auto second_it = second_temp.number_.begin();
+    auto second_end = second_temp.number_.end();
+
     bool add_base = false;
     for (int i = 0; i < general_size; i++) {
       int interim = add_base;
@@ -168,10 +233,18 @@ b_int &BigInteger::operator+=(const b_int &second) {
     return *this;
   } else {
     if (positive) {
+      b_int second_temp = second;
       second_temp.positive = true;
+
       result = *this - second_temp;
-      *this = result;
+    } else {
+      b_int second_temp = *this;
+      second_temp.positive = true;
+
+      result = second_temp - second;
+      result.positive = false;
     }
+    *this = result;
   }
 
   if (!positive && !second.positive) this->positive = false;
@@ -179,9 +252,7 @@ b_int &BigInteger::operator+=(const b_int &second) {
   return *this;
 }
 b_int BigInteger::operator-(const b_int &second) const {
-  b_int result;
-
-  result += *this;
+  b_int result(*this);
   result -= second;
 
   return result;
@@ -194,6 +265,7 @@ b_int BigInteger::operator-=(const b_int &second) {
 
   b_int master, slave;
   int general_size;
+
   if (number_.size() < second.number_.size()) {
     general_size = second.number_.size();
     master = second;
@@ -204,19 +276,18 @@ b_int BigInteger::operator-=(const b_int &second) {
     slave = second;
   }
 
-  if (*this > second) {
-    if (!master.positive && slave.positive) {
-      master.positive = true;
-      result = master + slave;
-      result.positive = false;
-      *this = result;
-      return* this;
-    }
-  } else if (*this < second) {
-    result.positive = false;
-    master = second;
-    slave = *this;
-  } else {
+  if (master.positive && !slave.positive) {
+    !slave;
+    result = master + slave;
+    *this = result;
+    return *this;
+  }
+
+  if (!master.positive && !slave.positive) {
+    !master;
+    !slave;
+    result = master + slave;
+    !result;
     *this = result;
     return *this;
   }
@@ -260,9 +331,14 @@ b_int BigInteger::operator-=(const b_int &second) {
     result.number_.erase(it++);
   }
 
+  if (!master.positive) {
+    !result;
+  }
+
   *this = result;
   return *this;
 }
+
 bool operator>(const b_int &left, const b_int &right) {
   if (left.positive && !right.positive) {
     return true;
@@ -271,18 +347,19 @@ bool operator>(const b_int &left, const b_int &right) {
     return false;
   }
 
-  if (left.number_.empty() && right.number_.empty()) {
-    std::cerr << "Operands is empty";
-    exit(1);
+  if (left.number_.empty() || right.number_.empty()) {
+    throw BigInteger::BigIntegerError("Error operation more. One or more operands is empty.");
   }
+
+  bool result = true;
 
   auto left_size = left.number_.size();
   auto right_size = right.number_.size();
   if (left_size > right_size) {
-    return true;
+    result = true;
   }
   if (left_size < right_size) {
-    return false;
+    result = false;
   }
 
   auto left_it = left.number_.begin();
@@ -294,55 +371,22 @@ bool operator>(const b_int &left, const b_int &right) {
       right_it++;
       continue;
     }
-    return *left_it > *right_it;
+    result = *left_it > *right_it;
+    break;
   }
 
-  return true;
+  return (!left.positive && !right.positive) == !result;
 }
 bool operator<(const b_int &left, const b_int &right) {
-  if (!left.positive && right.positive) {
-    return true;
-  }
-  if (left.positive && !right.positive) {
-    return false;
-  }
-
-  if (left.number_.empty() && right.number_.empty()) {
-    std::cerr << "Operands is empty";
-    exit(1);
-  }
-
-  auto left_size = left.number_.size();
-  auto right_size = right.number_.size();
-  if (left_size < right_size) {
-    return true;
-  }
-  if (left_size > right_size) {
-    return false;
-  }
-
-  auto left_it = left.number_.begin();
-  auto left_end = left.number_.end();
-  auto right_it = right.number_.begin();
-  while (left_it != left_end) {
-    if (*left_it == *right_it) {
-      left_it++;
-      right_it++;
-      continue;
-    }
-    return *left_it < *right_it;
-  }
-
-  return true;
+  return !(left > right) || left == right;
 }
 bool operator==(const b_int &left, const b_int &right) {
   if ((!left.positive && right.positive) || (left.positive && !right.positive)) {
     return false;
   }
 
-  if (left.number_.empty() && right.number_.empty()) {
-    std::cerr << "Operands is empty";
-    exit(1);
+  if (left.number_.empty() || right.number_.empty()) {
+    throw BigInteger::BigIntegerError("Error operator equality. One or more operands is empty.");
   }
 
   if (left.number_.size() != right.number_.size()) {
@@ -362,6 +406,18 @@ bool operator==(const b_int &left, const b_int &right) {
   }
 
   return true;
+}
+bool operator>=(const b_int &left, const b_int &right) {
+  return left > right && left == right;
+}
+bool operator<=(const b_int &left, const b_int &right) {
+  return left < right && left == right;
+}
+bool operator!=(const b_int &left, const b_int &right) {
+  return !(left == right);
+}
+void BigInteger::operator!() {
+  positive = !positive;
 }
 
 } // namespace Numerical

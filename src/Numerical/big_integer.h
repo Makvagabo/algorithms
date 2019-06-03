@@ -19,17 +19,34 @@ class BigInteger {
  public:
   BigInteger();
   explicit BigInteger(const std::string &number);
+  BigInteger(const char *number);
+  BigInteger(int number);
   BigInteger(const BigInteger &bi);
+
+  class BigIntegerError : public std::exception {
+   public:
+    std::string message_;
+    explicit BigIntegerError(std::string message): message_(std::move(message)) {}
+  };
+
+  std::string toString() const;
+
   BigInteger operator+(const BigInteger &second) const;
   BigInteger &operator+=(const BigInteger &second);
   BigInteger operator-(const BigInteger &second) const;
   BigInteger operator-=(const BigInteger &second);
   BigInteger operator*(const BigInteger &second) const;
   BigInteger &operator*=(const BigInteger &second);
+  void operator!();
+
+  friend std::ostream &operator<<(std::ostream &os, const BigInteger &bi);
+
   friend bool operator>(const BigInteger &left, const BigInteger &right);
   friend bool operator<(const BigInteger &left, const BigInteger &right);
   friend bool operator==(const BigInteger &left, const BigInteger &right);
-  friend std::ostream &operator<<(std::ostream &os, const BigInteger &bi);
+  friend bool operator>=(const BigInteger &left, const BigInteger &right);
+  friend bool operator<=(const BigInteger &left, const BigInteger &right);
+  friend bool operator!=(const BigInteger &left, const BigInteger &right);
 };
 
 typedef BigInteger b_int;
