@@ -22,14 +22,6 @@ namespace Numerical {
 
 using std::cout, std::endl;
 
-void raise_to_power_example() {
-  cout << endl << "Example raise to power:" << endl;
-
-  double a = 3; int p = 33;
-  // 3 is a smallest number after 2, 33 is max power for double
-  cout << a << " to power " << p << " = " << std::fixed << RaiseToPower(a, p);
-  cout << endl;
-}
 void find_factors_example() {
   cout << endl << "Example find factors:" << endl;
 
