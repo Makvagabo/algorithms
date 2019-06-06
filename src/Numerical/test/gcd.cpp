@@ -6,8 +6,10 @@
 
 #include "Numerical/gcd.h"
 
+using Numerical::GCD;
+
 TEST(Numerical, GratestCommonDevisor_Test) {
-  EXPECT_EQ(Numerical::GCD(4851, 3003), 231);
-  EXPECT_EQ(Numerical::GCD(10, 5), 5);
-  EXPECT_EQ(Numerical::GCD(13, 17), 1);
+  EXPECT_EQ(GCD(4851, 3003), 231);
+  EXPECT_EQ(GCD(10, 5), 5);
+  EXPECT_EQ(GCD(13, 17), 1);
 }

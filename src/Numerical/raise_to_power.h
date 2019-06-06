@@ -7,6 +7,14 @@
 
 namespace Numerical {
 
+/**
+ * Fast rise to power
+ * Foundation is a two mathematical rules: a^(2*m) = (a^m)^2, a^(m+n) = a^m * a*n
+ * @tparam T Better experience with Numerical::BigInteger
+ * @param a Input number
+ * @param p Power
+ * @return T
+ */
 template <class T>
 T RaiseToPower(T a, int p);
 

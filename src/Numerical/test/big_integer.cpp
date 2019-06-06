@@ -6,9 +6,9 @@
 
 #include "Numerical/big_integer.h"
 
-using namespace Numerical;
+using Numerical::b_int;
 
-TEST(Numerical, BigInteger_test) {
+TEST(Numerical, BigInteger_Test) {
   b_int e_bi1, e_bi2;
   b_int bi1("9007199254740992");
   b_int bi2 = "4294967296";

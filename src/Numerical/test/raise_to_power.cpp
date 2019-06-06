@@ -8,7 +8,7 @@
 #include "Numerical/raise_to_power.h"
 #include "Numerical/big_integer.h"
 
-using namespace Numerical;
+using Numerical::RaiseToPower, Numerical::b_int;
 
 TEST(Numerical, RiseToPower_Test) {
   EXPECT_EQ(RaiseToPower<int>(3, 5), std::pow(3, 5));
