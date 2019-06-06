@@ -9,6 +9,10 @@
 
 namespace Numerical {
 
+/**
+ * Sieve of Eratosthenes
+ * @return
+ */
 std::list<int> FindPrimes(int);
 
 } // namespace Numerical

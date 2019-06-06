@@ -8,3 +8,4 @@
 #include "Numerical/test/raise_to_power.cpp"
 #include "Numerical/test/big_integer.cpp"
 #include "Numerical/test/find_factors.cpp"
+#include "Numerical/test/find_primes.cpp"
