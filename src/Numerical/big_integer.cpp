@@ -25,7 +25,7 @@ BigInteger::BigInteger(const std::string &number) : positive(true) {
   }
 
   while (it != number.end()) {
-    auto temp = (int)*it - (int)48;
+    auto temp = (int) *it - (int) 48;
 
     if (temp > 9 || temp < 0) {
       std::string message = "Error convert. Unexpected char: ";
@@ -45,8 +45,8 @@ BigInteger::BigInteger(const char *number) : positive(true) {
   }
 
   int i = !positive;
-  while (*(number+i) != '\0') {
-    auto temp = (int)*(number+i) - (int)48;
+  while (*(number + i) != '\0') {
+    auto temp = (int) *(number + i) - (int) 48;
 
     if (temp > 9 || temp < 0) {
       std::string message = "Error convert. Unexpected char: ";
@@ -58,7 +58,7 @@ BigInteger::BigInteger(const char *number) : positive(true) {
     i++;
   }
 }
-BigInteger::BigInteger(int number): positive(true) {
+BigInteger::BigInteger(int number) : positive(true) {
   number_.clear();
 
   auto number_str = std::to_string(number);
@@ -70,7 +70,7 @@ BigInteger::BigInteger(int number): positive(true) {
   }
 
   while (it != number_str.end()) {
-    auto temp = (int)*it - (int)48;
+    auto temp = (int) *it - (int) 48;
 
     if (temp > 9 || temp < 0) {
       std::string message = "Error convert. Unexpected char: ";
@@ -340,15 +340,14 @@ b_int BigInteger::operator-=(const b_int &second) {
 }
 
 bool operator>(const b_int &left, const b_int &right) {
-  if (left.positive && !right.positive) {
-    return true;
-  }
-  if (!left.positive && right.positive) {
+  if ((left.number_.empty() && right.number_.empty()) ||
+      (left.number_.empty() && !right.number_.empty()) ||
+      (!left.positive && right.positive)
+      ) {
     return false;
   }
-
-  if (left.number_.empty() || right.number_.empty()) {
-    throw BigInteger::BigIntegerError("Error operation more. One or more operands is empty.");
+  if ((!left.number_.empty() && right.number_.empty()) || (left.positive && !right.positive)) {
+    return true;
   }
 
   bool result = true;
@@ -381,13 +380,21 @@ bool operator<(const b_int &left, const b_int &right) {
   return !(left > right) || left == right;
 }
 bool operator==(const b_int &left, const b_int &right) {
-  if ((!left.positive && right.positive) || (left.positive && !right.positive)) {
+  if (left.number_.empty() && !right.number_.empty()) {
+    b_int temp = 0;
+    return temp == right;
+  }
+
+  if (!left.number_.empty() && right.number_.empty()) {
+    b_int temp = 0;
+    return left == temp;
+  }
+
+  if ((left.positive ^ right.positive)) {
     return false;
   }
 
-  if (left.number_.empty() || right.number_.empty()) {
-    throw BigInteger::BigIntegerError("Error operator equality. One or more operands is empty.");
-  }
+  if (left.number_.empty() && right.number_.empty()) return true;
 
   if (left.number_.size() != right.number_.size()) {
     return false;

@@ -35,31 +35,23 @@ T RaiseToPower(T a, int p) {
   }
 
   T multipliers = 1;
-  auto it = computed_pow_of2.begin();
 
   if (diff % 2) {
     diff--;
-    multipliers *= it->second;
+    multipliers *= computed_pow_of2.begin()->second;
   }
-  it++;
 
-  if (computed_pow_of2[diff] == 0) {
-    int start = n / 2;
-    if (diff < start) {
+  int start = 0;
+  while (computed_pow_of2[diff] == 0) {
+    start = (start ? start : n) / 2;
+    while (diff < start) {
       start /= 2;
     }
     multipliers *= computed_pow_of2[start];
     diff -= start;
-
-    while (diff != 0) {
-      multipliers *= it->second;
-      if (diff - it->first < 0) {
-        it = computed_pow_of2.begin();
-      } else {
-        diff -= it->first;
-      }
-      it++;
-    }
+  }
+  if (diff) {
+    multipliers *= computed_pow_of2[diff];
   }
 
   return computed_pow_of2[n] * multipliers;
