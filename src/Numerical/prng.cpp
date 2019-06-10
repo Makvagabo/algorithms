@@ -2,7 +2,7 @@
 // Created by Alexander on 02.05.2019.
 //
 
-#include "prng.h"
+#include "Numerical/prng.h"
 
 namespace Numerical {
 

@@ -4,16 +4,17 @@
 
 #include <iostream>
 
-#include "is_prime.h"
-#include "prng.h"
-#include "randomize_array.h"
-#include "raise_to_power.h"
+#include "Numerical/is_prime.h"
+#include "Numerical/prng.h"
+#include "Numerical/randomize_array.h"
+#include "Numerical/raise_to_power.h"
+#include "Numerical/big_integer.h"
 
 namespace Numerical {
 
 bool IsPrime(int number, int max_tests) {
   if (max_tests >= number) {
-    std::cerr << "Max count of tests must be less number!";
+    std::cerr << "Max count tests must be less number!";
   }
 
   int arr[max_tests];
@@ -25,7 +26,7 @@ bool IsPrime(int number, int max_tests) {
   RandomizeArray(generator, arr, max_tests);
 
   for (int i = 0; i < max_tests; ++i) {
-    auto pow = RaiseToPower<uint64_t>(arr[i], number - 1);
+    auto pow = RaiseToPower<b_int>(arr[i], number - 1);
     auto witness = pow % number;
     if (witness != 1) {
       return false;

@@ -2,19 +2,19 @@
 // Created by Alexander on 24.05.2019.
 //
 
-#include "big_integer.h"
-
 #include <stdlib.h>
 #include <iostream>
 #include <algorithm>
 #include <string>
 
+#include "Numerical/big_integer.h"
+
 namespace Numerical {
 
-using std::cout;
+using std::cout, std::vector;
 
-BigInteger::BigInteger() : positive(true) {}
-BigInteger::BigInteger(const std::string &number) : positive(true) {
+b_int::BigInteger() : positive(true) {}
+b_int::BigInteger(const std::string &number) : positive(true) {
   number_.clear();
 
   auto it = number.begin();
@@ -30,14 +30,16 @@ BigInteger::BigInteger(const std::string &number) : positive(true) {
     if (temp > 9 || temp < 0) {
       std::string message = "Error convert. Unexpected char: ";
       message.append(std::to_string(temp));
-      throw BigIntegerError(message);
+      throw BigIntegerError(message, __FILE__, __LINE__);
     }
 
     number_.push_back(temp);
     it++;
   }
+
+  refresh(*this);
 }
-BigInteger::BigInteger(const char *number) : positive(true) {
+b_int::BigInteger(const char *number) : positive(true) {
   number_.clear();
 
   if (*number == '-') {
@@ -51,14 +53,16 @@ BigInteger::BigInteger(const char *number) : positive(true) {
     if (temp > 9 || temp < 0) {
       std::string message = "Error convert. Unexpected char: ";
       message.append(std::to_string(temp));
-      throw BigIntegerError(message);
+      throw BigIntegerError(message, __FILE__, __LINE__);
     }
 
     number_.push_back(temp);
     i++;
   }
+
+  refresh(*this);
 }
-BigInteger::BigInteger(int number) : positive(true) {
+b_int::BigInteger(int number) : positive(true) {
   number_.clear();
 
   auto number_str = std::to_string(number);
@@ -75,19 +79,29 @@ BigInteger::BigInteger(int number) : positive(true) {
     if (temp > 9 || temp < 0) {
       std::string message = "Error convert. Unexpected char: ";
       message.append(std::to_string(temp));
-      throw BigIntegerError(message);
+      throw BigIntegerError(message, __FILE__, __LINE__);
     }
 
     number_.push_back(temp);
     it++;
   }
 }
-BigInteger::BigInteger(const b_int &bi) {
+b_int::BigInteger(const b_int &bi) {
   positive = bi.positive;
   number_ = bi.number_;
 }
+b_int::BigInteger(const b_int &bi, unsigned int start, unsigned int end) {
+  if (start >= bi.number_.size() || end >= bi.number_.size() || start > end) {
+    throw BigIntegerError("Incorrect range slice", __FILE__, __LINE__);
+  }
 
-std::string BigInteger::toString() const {
+  positive = bi.positive;
+  for (auto it = bi.number_.begin() + start; it != bi.number_.begin() + end; ++it) {
+    number_.push_back(*it);
+  }
+}
+
+std::string b_int::toString() const {
   std::string temp;
 
   if (!positive) {
@@ -99,6 +113,85 @@ std::string BigInteger::toString() const {
   }
 
   return temp;
+}
+void b_int::refresh(b_int &bi) {
+  auto it = bi.number_.begin();
+  while (*it == 0 && it != bi.number_.end()) {
+    // !!! past bug was because iterator was incrementing
+    bi.number_.erase(it);
+  }
+}
+b_int b_int::division(const b_int &master, const b_int &slave, bool mod = false) {
+  // на ноль делить нельзя и на пустоту
+  if (slave.number_.empty() || slave == 0) {
+    throw BigIntegerError("Divider can not be empty or zero.", __FILE__, __LINE__);
+  }
+
+  b_int result;
+  if (master.number_.empty() || master == 0) {
+    result = 0;
+    return result;
+  }
+
+  // делить только большее или равное по размеру и величине с делителем число
+  auto dividend_size = master.number_.size();
+  auto divider_size = slave.number_.size();
+  if (dividend_size <= divider_size) {
+    if (mod) {
+      result = master;
+      result.positive = true;
+      return result;
+    }
+    if (((master.positive && slave.positive) && (master < slave)) ||
+        ((!master.positive && !slave.positive) && (master > slave))
+        ) {
+      result = 0;
+      return result;
+    }
+  }
+
+  b_int master_(master); master_.positive = true;
+  b_int slave_(slave); slave_.positive = true;
+
+  // минимальная разделяемая часть по количеству знаков будет как делитель
+  auto dividend_part = b_int(master_, 0, divider_size);
+  auto dividend_it = master_.number_.begin() + divider_size;
+  // повторяем пока итератор не равен конечному итератору
+  while (dividend_it != master_.number_.end()) {
+    // если делимая часть меньше чем делитель и следующий знак есть, добираем
+    bool add_zero = false;
+    while (dividend_part < slave_) {
+      // если увеличиваем размер делимой части больше чем на одну цифру
+      if (add_zero && !mod) result.number_.push_back(0);
+
+      if (dividend_it != master_.number_.end()) {
+        dividend_part.number_.push_back(*dividend_it);
+        // смещаем указатель итератор на количество делимых знаков
+        dividend_it++;
+        add_zero = true;
+        refresh(dividend_part);
+      } else {
+        break;
+      }
+    }
+    if (dividend_part < slave_) {
+      break;
+    }
+    // производим деление
+    // находим максимальный множитель, произведение которого с делителем не превышало делимую часть
+    int max_multiplier = 1;
+    while (slave_ * (max_multiplier + 1) < dividend_part) {
+      max_multiplier++;
+    }
+    // записываем множитель в результат
+    if (!mod) result.number_.push_back(max_multiplier);
+    // находим остаток
+    dividend_part -= slave_ * max_multiplier;
+  }
+  // возвращаем результат
+  refresh(dividend_part);
+  result.positive = !(master.positive ^ slave.positive);
+  return mod ? dividend_part : result;
 }
 
 std::ostream &operator<<(std::ostream &os, const b_int &bi) {
@@ -113,22 +206,17 @@ std::ostream &operator<<(std::ostream &os, const b_int &bi) {
   return os;
 }
 
-b_int BigInteger::operator*(const b_int &second) const {
+b_int &b_int::operator*=(const b_int &second) {
   if (this->number_.empty() || second.number_.empty()) {
-    throw BigIntegerError("Error operation multiplication. One or more operands is empty.");
-  }
-
-  b_int result(*this);
-  result *= second;
-
-  return result;
-}
-b_int &BigInteger::operator*=(const b_int &second) {
-  if (this->number_.empty() || second.number_.empty()) {
-    throw BigIntegerError("Error operation multiplication. One or more operands is empty.");
+    throw BigIntegerError("Error operation multiplication. One or more operands is empty.", __FILE__, __LINE__);
   }
 
   b_int result;
+
+  if (*this == 0 || second == 0) {
+    *this = result;
+    return *this;
+  }
 
   b_int master, slave;
   if (number_.size() < second.number_.size()) {
@@ -177,13 +265,44 @@ b_int &BigInteger::operator*=(const b_int &second) {
 
   return *this;
 }
-b_int BigInteger::operator+(const b_int &second) const {
-  b_int result(*this);
-  result += second;
+b_int b_int::operator*(const b_int &second) const {
+  if (this->number_.empty() || second.number_.empty()) {
+    throw BigIntegerError("Error operation multiplication. One or more operands is empty.", __FILE__, __LINE__);
+  }
+
+  b_int result;
+  if (*this == 0 || second == 0) {
+    return result;
+  }
+
+  result = *this;
+  result *= second;
 
   return result;
 }
-b_int &BigInteger::operator+=(const b_int &second) {
+b_int operator*(int left, const BigInteger &second) {
+  b_int result = left;
+  result *= second;
+
+  return result;
+}
+b_int operator*(const char *left, const BigInteger &second) {
+  b_int result = left;
+  result *= second;
+
+  return result;
+}
+
+b_int &b_int::operator+=(const b_int &second) {
+  if (*this == 0) {
+    *this = second;
+    return *this;
+  }
+
+  if (second == 0) {
+    return *this;
+  }
+
   b_int result;
   auto general_size = number_.size() < second.number_.size() ? second.number_.size() : number_.size();
 
@@ -247,20 +366,59 @@ b_int &BigInteger::operator+=(const b_int &second) {
     *this = result;
   }
 
-  if (!positive && !second.positive) this->positive = false;
+  if (!positive && !second.positive) positive = false;
 
   return *this;
 }
-b_int BigInteger::operator-(const b_int &second) const {
-  b_int result(*this);
-  result -= second;
+b_int b_int::operator+(const b_int &second) const {
+  b_int result;
+
+  if (*this == 0) {
+    result = second;
+    return result;
+  }
+
+  if (second == 0) {
+    result = *this;
+    return result;
+  }
+
+  result = *this;
+  result += second;
 
   return result;
 }
-b_int BigInteger::operator-=(const b_int &second) {
+b_int operator+(int left, const BigInteger &second) {
+  b_int result = left;
+  result += second;
+
+  return result;
+}
+b_int operator+(const char *left, const BigInteger &second) {
+  b_int result = left;
+  result += second;
+
+  return result;
+}
+
+b_int &b_int::operator-=(const b_int &second) {
+  if (*this == 0) {
+    *this = second;
+    return *this;
+  }
+
+  if (second == 0) {
+    return *this;
+  }
+
   b_int result;
   if (number_.empty() && second.number_.empty()) {
-    return result;
+    return *this;
+  }
+
+  if (*this == second) {
+    *this = result;
+    return *this;
   }
 
   b_int master, slave;
@@ -277,17 +435,17 @@ b_int BigInteger::operator-=(const b_int &second) {
   }
 
   if (master.positive && !slave.positive) {
-    !slave;
+    slave = !slave;
     result = master + slave;
     *this = result;
     return *this;
   }
 
   if (!master.positive && !slave.positive) {
-    !master;
-    !slave;
+    master = !master;
+    slave = !slave;
     result = master + slave;
-    !result;
+    result = !result;
     *this = result;
     return *this;
   }
@@ -326,17 +484,82 @@ b_int BigInteger::operator-=(const b_int &second) {
 
   std::reverse(result.number_.begin(), result.number_.end());
 
-  auto it = result.number_.begin();
-  while (*it == 0) {
-    result.number_.erase(it++);
-  }
+  refresh(result);
 
   if (!master.positive) {
-    !result;
+    result = !result;
   }
 
   *this = result;
   return *this;
+}
+b_int b_int::operator-(const b_int &second) const {
+  b_int result;
+
+  if (*this == 0) {
+    result = second;
+    return result;
+  }
+
+  if (second == 0) {
+    result = *this;
+    return result;
+  }
+
+  result = *this;
+  result -= second;
+
+  return result;
+}
+b_int operator-(int left, const BigInteger &second) {
+  b_int result = left;
+  result -= second;
+
+  return result;
+}
+b_int operator-(const char *left, const BigInteger &second) {
+  b_int result = left;
+  result -= second;
+
+  return result;
+}
+
+b_int &b_int::operator/=(const b_int &second) {
+  *this = division(*this, second);
+  return *this;
+}
+b_int b_int::operator/(const b_int &second) const {
+  return division(*this, second);
+}
+b_int operator/(int left, const BigInteger &second) {
+  b_int result = left;
+  result /= second;
+
+  return result;
+}
+b_int operator/(const char *left, const BigInteger &second) {
+  b_int result = left;
+  result /= second;
+
+  return result;
+}
+
+b_int &b_int::operator%=(const b_int &second) {
+  *this = division(*this, second, true);
+  return *this;
+}
+b_int b_int::operator%(const b_int &second) const {
+  return division(*this, second, true);
+}
+b_int operator%(int left, const BigInteger &second) {
+  b_int temp = left;
+
+  return BigInteger::division(temp, second, true);
+}
+b_int operator%(const char *left, const BigInteger &second) {
+  b_int temp = left;
+
+  return BigInteger::division(temp, second, true);
 }
 
 bool operator>(const b_int &left, const b_int &right) {
@@ -356,22 +579,21 @@ bool operator>(const b_int &left, const b_int &right) {
   auto right_size = right.number_.size();
   if (left_size > right_size) {
     result = true;
-  }
-  if (left_size < right_size) {
+  } else if (left_size < right_size) {
     result = false;
-  }
-
-  auto left_it = left.number_.begin();
-  auto left_end = left.number_.end();
-  auto right_it = right.number_.begin();
-  while (left_it != left_end) {
-    if (*left_it == *right_it) {
-      left_it++;
-      right_it++;
-      continue;
+  } else {
+    auto left_it = left.number_.begin();
+    auto left_end = left.number_.end();
+    auto right_it = right.number_.begin();
+    while (left_it != left_end) {
+      if (*left_it == *right_it) {
+        left_it++;
+        right_it++;
+        continue;
+      }
+      result = *left_it > *right_it;
+      break;
     }
-    result = *left_it > *right_it;
-    break;
   }
 
   return (!left.positive && !right.positive) == !result;
@@ -423,8 +645,19 @@ bool operator<=(const b_int &left, const b_int &right) {
 bool operator!=(const b_int &left, const b_int &right) {
   return !(left == right);
 }
-void BigInteger::operator!() {
-  positive = !positive;
-}
 
+b_int const b_int::operator!() {
+  b_int temp(*this);
+  temp.positive = !positive;
+  return temp;
+}
+b_int &b_int::operator++() {
+  *this += 1;
+  return *this;
+}
+b_int const b_int::operator++(int) {
+  b_int temp(*this);
+  operator++();
+  return temp;
+}
 } // namespace Numerical

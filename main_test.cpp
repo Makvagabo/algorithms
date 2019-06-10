@@ -9,3 +9,4 @@
 #include "Numerical/test/big_integer.cpp"
 #include "Numerical/test/find_factors.cpp"
 #include "Numerical/test/find_primes.cpp"
+#include "Numerical/test/is_prime.cpp"

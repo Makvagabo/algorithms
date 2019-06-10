@@ -2,7 +2,7 @@
 // Created by Alexander on 12.05.2019.
 //
 
-#include "gcd.h"
+#include "Numerical/gcd.h"
 
 namespace Numerical {
 

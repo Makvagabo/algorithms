@@ -4,7 +4,7 @@
 
 #include <math.h>
 
-#include "find_factors.h"
+#include "Numerical/find_factors.h"
 
 namespace Numerical {
 
