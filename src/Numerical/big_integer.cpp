@@ -37,7 +37,7 @@ b_int::BigInteger(const std::string &number) : positive(true) {
     it++;
   }
 
-  refresh(*this);
+  if (number_.size() > 1) refresh(*this);
 }
 b_int::BigInteger(const char *number) : positive(true) {
   number_.clear();
@@ -60,7 +60,7 @@ b_int::BigInteger(const char *number) : positive(true) {
     i++;
   }
 
-  refresh(*this);
+  if (number_.size() > 1) refresh(*this);
 }
 b_int::BigInteger(int number) : positive(true) {
   number_.clear();
@@ -169,7 +169,6 @@ b_int b_int::division(const b_int &master, const b_int &slave, bool mod = false)
         // смещаем указатель итератор на количество делимых знаков
         dividend_it++;
         add_zero = true;
-        refresh(dividend_part);
       } else {
         break;
       }
@@ -185,6 +184,8 @@ b_int b_int::division(const b_int &master, const b_int &slave, bool mod = false)
     }
     // записываем множитель в результат
     if (!mod) result.number_.push_back(max_multiplier);
+
+    refresh(dividend_part);
     // находим остаток
     dividend_part -= slave_ * max_multiplier;
   }
@@ -575,16 +576,22 @@ bool operator>(const b_int &left, const b_int &right) {
 
   bool result = true;
 
-  auto left_size = left.number_.size();
-  auto right_size = right.number_.size();
+  auto left_ = left;
+  auto right_ = right;
+
+  b_int::refresh(left_);
+  b_int::refresh(right_);
+
+  auto left_size = left_.number_.size();
+  auto right_size = right_.number_.size();
   if (left_size > right_size) {
     result = true;
   } else if (left_size < right_size) {
     result = false;
   } else {
-    auto left_it = left.number_.begin();
-    auto left_end = left.number_.end();
-    auto right_it = right.number_.begin();
+    auto left_it = left_.number_.begin();
+    auto left_end = left_.number_.end();
+    auto right_it = right_.number_.begin();
     while (left_it != left_end) {
       if (*left_it == *right_it) {
         left_it++;
@@ -618,13 +625,19 @@ bool operator==(const b_int &left, const b_int &right) {
 
   if (left.number_.empty() && right.number_.empty()) return true;
 
-  if (left.number_.size() != right.number_.size()) {
+  auto left_ = left;
+  auto right_ = right;
+
+  b_int::refresh(left_);
+  b_int::refresh(right_);
+
+  if (left_.number_.size() != right_.number_.size()) {
     return false;
   }
 
-  auto left_it = left.number_.begin();
-  auto left_end = left.number_.end();
-  auto right_it = right.number_.begin();
+  auto left_it = left_.number_.begin();
+  auto left_end = left_.number_.end();
+  auto right_it = right_.number_.begin();
   while (left_it != left_end) {
     if (*left_it == *right_it) {
       left_it++;
