@@ -11,3 +11,4 @@
 #include "Numerical/test/find_primes.cpp"
 #include "Numerical/test/is_prime.cpp"
 #include "Numerical/test/numerical_integration.cpp"
+#include "Numerical/test/find_zero.cpp"
