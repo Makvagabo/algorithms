@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <math.h>
+#include <cmath>
 
 #include "Numerical/numerical_integration.h"
 

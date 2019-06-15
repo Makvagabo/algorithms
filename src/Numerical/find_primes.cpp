@@ -2,7 +2,7 @@
 // Created by Alexander on 21.05.2019.
 //
 
-#include <math.h>
+#include <cmath>
 #include <list>
 
 #include "find_primes.h"

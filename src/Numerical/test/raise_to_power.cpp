@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <math.h>
+#include <cmath>
 
 #include "Numerical/raise_to_power.h"
 #include "Numerical/big_integer.h"

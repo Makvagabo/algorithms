@@ -3,7 +3,6 @@
 //
 
 #include <gtest/gtest.h>
-#include <math.h>
 
 #include "Numerical/find_zero.h"
 

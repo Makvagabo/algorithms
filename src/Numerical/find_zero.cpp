@@ -2,7 +2,7 @@
 // Created by Alexander on 15.06.2019.
 //
 
-#include <math.h>
+#include <cmath>
 
 #include "find_zero.h"
 

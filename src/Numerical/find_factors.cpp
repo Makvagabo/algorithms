@@ -2,7 +2,7 @@
 // Created by Alexander on 20.05.2019.
 //
 
-#include <math.h>
+#include <cmath>
 
 #include "Numerical/find_factors.h"
 
