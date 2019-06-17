@@ -15,9 +15,21 @@ TEST(Numerical, FindPrimes_Test) {
       139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199
   };
 
-  auto finds = FindPrimes(200);
-  auto it = finds.begin();
-  for (int v : primes) {
-    EXPECT_EQ(*(it++), v);
+  auto finds_1 = FindPrimes(200);
+  auto it_1 = finds_1.begin();
+  for (int i = 0; i < 46 && it_1 != finds_1.end(); i++, it_1++) {
+    EXPECT_EQ(*it_1, primes[i]);
+  }
+
+  auto finds_2 = FindPrimes(71);
+  auto it_2 = finds_2.begin();
+  for (int i = 0; i < 46 && it_2 != finds_2.end(); i++, it_2++) {
+    EXPECT_EQ(*it_2, primes[i]);
+  }
+
+  auto finds_3 = FindPrimes(5);
+  auto it_3 = finds_3.begin();
+  for (int i = 0; i < 46 && it_3 != finds_3.end(); i++, it_3++) {
+    EXPECT_EQ(*it_3, primes[i]);
   }
 }

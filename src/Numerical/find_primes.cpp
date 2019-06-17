@@ -33,7 +33,7 @@ std::list<int> FindPrimes(int max_number) {
   }
 
   std::list<int> primes;
-  for (int j = 2; j < max_number; ++j) {
+  for (int j = 2; j <= max_number; ++j) {
     if (!is_composite[j]) primes.push_back(j);
   }
 

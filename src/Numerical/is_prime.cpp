@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Numerical/is_prime.h"
+#include "Numerical/find_primes.h"
 #include "Numerical/prng.h"
 #include "Numerical/randomize_array.h"
 #include "Numerical/raise_to_power.h"
@@ -12,28 +13,31 @@
 
 namespace Numerical {
 
-bool IsPrime(int number, int max_tests) {
-  if (max_tests >= number) {
-    std::cerr << "Max count tests must be less number!";
-  }
-
-  int arr[max_tests];
-  for (int i = 0; i < max_tests; ++i) {
-    arr[i] = i + 1;
-  }
-
-  auto *generator  = new PRNG(14, 3, 1879);
-  RandomizeArray(generator, arr, max_tests);
-
-  for (int i = 0; i < max_tests; ++i) {
-    auto pow = RaiseToPower<b_int>(arr[i], number - 1);
-    auto witness = pow % number;
-    if (witness != 1) {
-      return false;
+bool IsPrime(unsigned int number, unsigned int max_tests) {
+  if (number > 1) {
+    if (number < 100) {
+      return Numerical::FindPrimes(number).back() == number;
     }
+
+    int arr[max_tests];
+    for (int i = 0; i < max_tests; ++i) {
+      arr[i] = i + 1;
+    }
+
+    auto *generator  = new PRNG(14, 3, 1879);
+    RandomizeArray(generator, arr, max_tests);
+
+    for (int i = 0; i < max_tests; ++i) {
+      auto pow = RaiseToPower<b_int>(arr[i], number - 1);
+      auto witness = pow % number;
+      if (witness != 1) {
+        return false;
+      }
+    }
+
   }
 
-  return true;
+  return false;
 }
 
 } // namespace Numerical

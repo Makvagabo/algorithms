@@ -2,7 +2,7 @@
 // Created by Alexander on 14.06.2019.
 //
 
-#include "numerical_integration.h"
+#include "Numerical/numerical_integration.h"
 
 namespace Numerical {
 

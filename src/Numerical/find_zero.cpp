@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#include "find_zero.h"
+#include "Numerical/find_zero.h"
 
 float Numerical::FindZero(float (*f)(float), float (*dfdx)(float), float init_guess, float max_error) {
   auto x = init_guess;
