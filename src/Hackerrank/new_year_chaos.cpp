@@ -12,8 +12,9 @@ int minimumBribes(std::vector<int> q) {
 
   int start = 0;
 
+  bool first = true;
   for (int i = 0; i < size; i++) {
-    if (q[i] == i + 1) {
+    if (first && q[i] == i + 1) {
       start++;
     }
 
@@ -22,6 +23,8 @@ int minimumBribes(std::vector<int> q) {
     if (range > 2) {
       return -1;
     }
+
+    first = false;
   }
 
   while (start < size - 1) {
