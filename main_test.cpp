@@ -15,3 +15,5 @@
 #include "Numerical/test/is_carmichael.cpp"
 
 #include "Lists/test/ud_list.cpp"
+
+#include "Hackerrank/test/new_year_chaos.cpp"
