@@ -25,32 +25,44 @@ int minimumBribes(std::vector<int> q) {
     }
 
     first = false;
-  }
 
-  while (start < size - 1) {
-    bool first = true;
-    for (int i = start; i < size - 1; i++) {
-      if (first && q[i] == i + 1) {
-        start = i + 1;
-        first = false;
-        continue;
-      }
-
-      int current = q[i];
-      int next = q[i + 1];
-
-      if (current > next) {
-        q[i] = next;
-        q[i + 1] = current;
-
-        if (current == i + 2) {
-          first = false;
-        }
-
+    /**
+     * Fast algorithm
+     */
+    for (int j = std::max(0, q[i] - 2); j < i; j++) {
+      if (q[j] > q[i]) {
         count_bribes++;
       }
     }
   }
+
+  /**
+   * Slow algorithm with sorting
+   */
+  // while (start < size - 1) {
+  //   bool first = true;
+  //   for (int i = start; i < size - 1; i++) {
+  //     if (first && q[i] == i + 1) {
+  //       start = i + 1;
+  //       first = false;
+  //       continue;
+  //     }
+  //
+  //     int current = q[i];
+  //     int next = q[i + 1];
+  //
+  //     if (current > next) {
+  //       q[i] = next;
+  //       q[i + 1] = current;
+  //
+  //       if (current == i + 2) {
+  //         first = false;
+  //       }
+  //
+  //       count_bribes++;
+  //     }
+  //   }
+  // }
 
   return count_bribes;
 }
