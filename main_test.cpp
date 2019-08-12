@@ -17,3 +17,4 @@
 #include "Lists/test/ud_list.cpp"
 
 #include "Hackerrank/test/new_year_chaos.cpp"
+#include "Hackerrank/test/minimum_swaps.cpp"
