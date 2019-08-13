@@ -18,3 +18,4 @@
 
 #include "Hackerrank/test/new_year_chaos.cpp"
 #include "Hackerrank/test/minimum_swaps.cpp"
+#include "Hackerrank/test/array_manipulation.cpp"
