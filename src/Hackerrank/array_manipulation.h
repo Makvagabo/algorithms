@@ -1,5 +1,6 @@
 //
 // Created by Alexander on 14.08.2019.
+// https://www.hackerrank.com/challenges/crush/problem
 //
 
 #include <vector>

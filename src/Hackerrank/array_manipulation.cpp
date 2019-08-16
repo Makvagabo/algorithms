@@ -6,18 +6,19 @@
 
 #include "array_manipulation.h"
 
-long Hackerrank::arrayManipulation(int n, const std::vector<std::vector<int>>& queries) {
-  std::vector<long> z(n, 0);
+long Hackerrank::arrayManipulation(int n, const std::vector<std::vector<int>> &queries) {
+  std::vector<long> z(n + 1, 0);
 
   for (auto q : queries) {
-    for (int i = q[0] - 1; i < q[1]; ++i) {
-      z[i] += q[2];
-    }
+    z[q[0]] += q[2];
+    if (q[1] + 1 <= n) z[q[1] + 1] -= q[2];
   }
 
   long max = 0;
+  long x = 0;
   for (auto v : z) {
-    max = v > max ? v : max;
+    x += v;
+    if (x > max) max = x;
   }
 
   return max;
