@@ -20,3 +20,4 @@
 #include "Hackerrank/test/minimum_swaps.cpp"
 #include "Hackerrank/test/array_manipulation.cpp"
 #include "Hackerrank/test/make_anagram.cpp"
+#include "Hackerrank/test/sherlock_string.cpp"
