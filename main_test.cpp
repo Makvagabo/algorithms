@@ -21,3 +21,4 @@
 #include "Hackerrank/test/array_manipulation.cpp"
 #include "Hackerrank/test/make_anagram.cpp"
 #include "Hackerrank/test/sherlock_string.cpp"
+#include "Hackerrank/test/substr_count.cpp"
