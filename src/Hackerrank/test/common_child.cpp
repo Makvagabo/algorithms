@@ -19,9 +19,9 @@ TEST(Hackerrank, common_child_Test) {
   std::string s4_1 = "ELGGYJWKTDHLXJRBJLRYEJWVSUFZKYHOIKBGTVUTTOCGMLEXWDSXEBKRZTQUVCJNGKKRMUUBACVOEQKBFFYBUQEMYNENKYYGUZSP";
   std::string s4_2 = "FRVIFOVJYQLVZMFBNRUTIYFBMFFFRZVBYINXLDDSVMPWSQGJZYTKMZIPEGMVOUQBKYEWEYVOLSHCMHPAZYTENRNONTJWDANAMFRX";
 
-  // EXPECT_EQ(Hackerrank::commonChild(s0_1, s0_2), 3);
-  // EXPECT_EQ(Hackerrank::commonChild(s1_1, s1_2), 2);
+  EXPECT_EQ(Hackerrank::commonChild(s0_1, s0_2), 3);
+  EXPECT_EQ(Hackerrank::commonChild(s1_1, s1_2), 2);
   EXPECT_EQ(Hackerrank::commonChild(s2_1, s2_2), 15);
-  // EXPECT_EQ(Hackerrank::commonChild(s3_1, s3_2), 2);
-  // EXPECT_EQ(Hackerrank::commonChild(s4_1, s4_2), 27);
+  EXPECT_EQ(Hackerrank::commonChild(s3_1, s3_2), 2);
+  EXPECT_EQ(Hackerrank::commonChild(s4_1, s4_2), 27);
 }

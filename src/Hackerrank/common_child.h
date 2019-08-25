@@ -1,5 +1,6 @@
 //
 // Created by Alexander on 19.08.2019.
+// https://www.hackerrank.com/challenges/common-child/problem
 //
 
 #include <string>
